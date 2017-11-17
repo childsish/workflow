@@ -1,0 +1,3 @@
+[submodule "lib/graph"]
+	path = lib/graph
+	url = https://github.com/childsish/graph.git
