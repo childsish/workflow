@@ -18,7 +18,8 @@ add_subdirectory(lib/graph)
 
 add_library(workflow
         src/Input.cpp include/workflow/Input.h
-        src/Output.cpp include/workflow/Output.h)
+        src/Output.cpp include/workflow/Output.h
+        src/Step.cpp include/workflow/Step.h)
 target_include_directories(workflow PRIVATE
         include/workflow)
 target_link_libraries(workflow

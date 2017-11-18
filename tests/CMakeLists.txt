@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD 11)
 add_subdirectory(googletest)
 
 add_executable(workflow_unit_tests
-        test_Output.cpp)
+        test_Output.cpp
+        test_Step.cpp)
 target_include_directories(workflow_unit_tests PRIVATE
         ../include
         ${gtest_SOURCE_DIR}/include
