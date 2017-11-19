@@ -38,16 +38,17 @@ TEST(OutputTest, test_pipe_to_many) {
     EXPECT_THAT(graph.get_children(0), UnorderedElementsAre(1, 2, 3));
 }
 
-TEST(OutputTest, test_pipe_redundant) {
+TEST(OutputTest, test_pipe_to_connected_input) {
     workflow::WorkflowGraph graph;
-    auto output = std::make_shared<workflow::Output>(0, "output", graph);
-    auto input = std::make_shared<workflow::Input>(1, "input");
-    graph.add_vertex<output_partition>(output->identifier, output);
+    auto output1 = std::make_shared<workflow::Output>(0, "output1", graph);
+    auto output2 = std::make_shared<workflow::Output>(1, "output2", graph);
+    auto input = std::make_shared<workflow::Input>(2, "input");
+    graph.add_vertex<output_partition>(output1->identifier, output1);
+    graph.add_vertex<output_partition>(output2->identifier, output2);
     graph.add_vertex<input_partition>(input->identifier, input);
 
-    output->pipe(input);
-    output->pipe(input);
-    output->pipe(input);
+    output1->pipe(input);
 
-    EXPECT_THAT(graph.get_children(0), UnorderedElementsAre(1));
+    EXPECT_THROW(output1->pipe(input), std::runtime_error);
+    EXPECT_THROW(output2->pipe(input), std::runtime_error);
 }
