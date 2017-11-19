@@ -21,6 +21,8 @@ namespace workflow {
     class Workflow {
     public:
 
+        Workflow();
+
         std::shared_ptr<Step> add_step(const std::string &step, const std::vector<std::string> &ins, const std::vector<std::string> &outs);
 
         std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Step> &step) const;
@@ -33,7 +35,7 @@ namespace workflow {
 
         std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Output> &output) const;
 
-        std::unordered_set<std::shared_ptr<Input>> get_connected_input(const std::shared_ptr<Output> &output) const;
+        std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Output> &output) const;
 
     private:
 
