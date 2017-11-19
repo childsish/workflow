@@ -1,41 +1,47 @@
 #ifndef WORKFLOW_WORKFLOW_H
 #define WORKFLOW_WORKFLOW_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <graph/PartiteGraph.h>
+#include "Input.h"
+#include "Output.h"
 #include "Step.h"
 
-class Workflow {
-public:
+namespace workflow {
 
-    Step add_step(const std::string &step, const std::vector<std::string> ins, const std::vector<std::string> outs);
+    typedef graph::PartiteGraph<
+            unsigned int,
+            std::shared_ptr<Step>,
+            std::shared_ptr<Input>,
+            std::shared_ptr<Output>
+    > WorkflowGraph;
 
-    std::unordered_set<Input> get_connected_inputs(const Step &step) const;
+    class Workflow {
+    public:
 
-    std::unordered_set<Output> get_connected_outputs(const Step &step) const;
+        std::shared_ptr<Step> add_step(const std::string &step, const std::vector<std::string> &ins, const std::vector<std::string> &outs);
 
-    std::unordered_set<Output> get_connected_outputs(const Input &input) const;
+        std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Step> &step) const;
 
-    std::unordered_set<Step> get_connected_steps(const Input &input) const;
+        std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Step> &step) const;
 
-    std::unordered_set<Step> get_connected_steps(const Output &output) const;
+        std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Input> &input) const;
 
-    std::unordered_set<Input> get_connected_input(const Output &output) const;
+        std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Input> &input) const;
 
-private:
+        std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Output> &output) const;
 
-    unsigned int identifier;
+        std::unordered_set<std::shared_ptr<Input>> get_connected_input(const std::shared_ptr<Output> &output) const;
 
-    graph::PartiteGraph<unsigned int, Step, Input, Output> graph;
+    private:
 
-    void connect_step_input(const Step &step, const Input &input);
+        unsigned int identifier;
 
-    void connect_step_output(const Step &step, const Output &output);
+        WorkflowGraph graph;
 
-    void connect_input_output(const Input &input, const Output &output);
-
-};
-
+    };
+}
 
 #endif //WORKFLOW_WORKFLOW_H
