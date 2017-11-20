@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/childsish/workflow.svg?branch=master)](https://travis-ci.org/childsish/workflow)
+
 # workflow
 *workflow* is a library that provides a common workflow implementation for projects that use workflows. The implemented
 *workflow* is composed of two or more *steps*. Each step can have zero or more *inputs* and *outputs*. An *output* can
