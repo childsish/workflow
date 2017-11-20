@@ -21,7 +21,8 @@ add_library(workflow
         src/Output.cpp include/workflow/Output.h
         src/Step.cpp include/workflow/Step.h
         src/Workflow.cpp include/workflow/Workflow.h)
-target_include_directories(workflow PRIVATE
+target_include_directories(workflow PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         include/workflow)
 target_link_libraries(workflow
         graph)
