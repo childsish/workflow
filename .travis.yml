@@ -1,5 +1,4 @@
-language:
- - cpp
+language: cpp
 compiler: gcc
 
 # This will run on Travis' 'new' container-based infrastructure
