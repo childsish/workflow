@@ -32,17 +32,17 @@ namespace workflow {
 
         std::shared_ptr<Step> add_step(const std::string &step, const std::vector<std::string> &ins, const std::vector<std::string> &outs);
 
-        std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Step> &step) const;
+        const std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Step> &step) const;
 
-        std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Step> &step) const;
+        const std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Step> &step) const;
 
-        std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Input> &input) const;
+        const std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Input> &input) const;
 
-        std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Input> &input) const;
+        const std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Input> &input) const;
 
-        std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Output> &output) const;
+        const std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Output> &output) const;
 
-        std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Output> &output) const;
+        const std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Output> &output) const;
 
     private:
 

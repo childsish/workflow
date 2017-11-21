@@ -21,9 +21,6 @@ namespace workflow {
         const unsigned int identifier;
         const std::string name;
 
-        std::unordered_map<std::string, std::shared_ptr<Input>> ins;
-        std::unordered_map<std::string, std::shared_ptr<Output>> outs;
-
         /**
          * Pipe the single output of this step to the single input of another. If there are multiple outputs or inputs,
          * then an exception will be thrown.
@@ -32,9 +29,21 @@ namespace workflow {
          */
         void pipe(const std::shared_ptr<Step> &target);
 
+        /**
+         * Getters for the inputs and outputs connected to the step
+         * @brief get named inputs and outputs
+         * @param name name of the input/output to get
+         * @return input/output object
+         */
+        const std::shared_ptr<Input> ins(const std::string &name) const;
+        const std::shared_ptr<Output> outs(const std::string &name) const;
+
     private:
 
         friend Workflow;
+
+        std::unordered_map<std::string, std::shared_ptr<Input>> _ins;
+        std::unordered_map<std::string, std::shared_ptr<Output>> _outs;
 
         Step(unsigned int identifier, const std::string &name);
 

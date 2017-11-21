@@ -15,8 +15,8 @@ TEST(TestWorkflow, test_add_step) {
 
     EXPECT_THAT(workflow.get_connected_inputs(step), UnorderedElementsAre(Name("input1"), Name("input2")));
     EXPECT_THAT(workflow.get_connected_outputs(step), UnorderedElementsAre(Name("output1"), Name("output2")));
-    EXPECT_THAT(workflow.get_connected_steps(step->ins["input1"]), UnorderedElementsAre(Name("step")));
-    EXPECT_THAT(workflow.get_connected_steps(step->outs["output1"]), UnorderedElementsAre(Name("step")));
+    EXPECT_THAT(workflow.get_connected_steps(step->ins("input1")), UnorderedElementsAre(Name("step")));
+    EXPECT_THAT(workflow.get_connected_steps(step->outs("output1")), UnorderedElementsAre(Name("step")));
 }
 
 TEST(TestWorkflow, test_add_step_with_repeat_names) {
@@ -33,8 +33,8 @@ TEST(TestWorkflow, test_pipe_one_to_one) {
 
     step1->pipe(step2);
 
-    EXPECT_THAT(workflow.get_connected_inputs(step1->outs["output"]), UnorderedElementsAre(Name("input")));
-    EXPECT_THAT(workflow.get_connected_outputs(step2->ins["input"]), UnorderedElementsAre(Name("output")));
+    EXPECT_THAT(workflow.get_connected_inputs(step1->outs("output")), UnorderedElementsAre(Name("input")));
+    EXPECT_THAT(workflow.get_connected_outputs(step2->ins("input")), UnorderedElementsAre(Name("output")));
 }
 
 TEST(TestWorkflow, test_pipe_one_to_multiple) {
@@ -74,12 +74,12 @@ TEST(TestWorkflow, test_pipe_output_to_input) {
     auto step1 = workflow.add_step("step", {}, {"output1", "output2"});
     auto step2 = workflow.add_step("step", {"input1", "input2"}, {});
 
-    step1->outs["output2"]->pipe(step2->ins["input2"]);
+    step1->outs("output2")->pipe(step2->ins("input2"));
 
-    EXPECT_THAT(workflow.get_connected_inputs(step1->outs["output2"]), UnorderedElementsAre(Name("input2")));
-    EXPECT_THAT(workflow.get_connected_outputs(step2->ins["input2"]), UnorderedElementsAre(Name("output2")));
-    EXPECT_TRUE(workflow.get_connected_inputs(step1->outs["output1"]).empty());
-    EXPECT_TRUE(workflow.get_connected_outputs(step2->ins["input1"]).empty());
+    EXPECT_THAT(workflow.get_connected_inputs(step1->outs("output2")), UnorderedElementsAre(Name("input2")));
+    EXPECT_THAT(workflow.get_connected_outputs(step2->ins("input2")), UnorderedElementsAre(Name("output2")));
+    EXPECT_TRUE(workflow.get_connected_inputs(step1->outs("output1")).empty());
+    EXPECT_TRUE(workflow.get_connected_outputs(step2->ins("input1")).empty());
 }
 
 TEST(TestWorkflow, test_pipe_one_to_many) {
@@ -93,10 +93,10 @@ TEST(TestWorkflow, test_pipe_one_to_many) {
     step1->pipe(step3);
     step1->pipe(step4);
 
-    EXPECT_THAT(workflow.get_connected_inputs(step1->outs["output"]), UnorderedElementsAre(Name("input1"), Name("input2"), Name("input3")));
-    EXPECT_THAT(workflow.get_connected_outputs(step2->ins["input1"]), UnorderedElementsAre(Name("output")));
-    EXPECT_THAT(workflow.get_connected_outputs(step3->ins["input2"]), UnorderedElementsAre(Name("output")));
-    EXPECT_THAT(workflow.get_connected_outputs(step4->ins["input3"]), UnorderedElementsAre(Name("output")));
+    EXPECT_THAT(workflow.get_connected_inputs(step1->outs("output")), UnorderedElementsAre(Name("input1"), Name("input2"), Name("input3")));
+    EXPECT_THAT(workflow.get_connected_outputs(step2->ins("input1")), UnorderedElementsAre(Name("output")));
+    EXPECT_THAT(workflow.get_connected_outputs(step3->ins("input2")), UnorderedElementsAre(Name("output")));
+    EXPECT_THAT(workflow.get_connected_outputs(step4->ins("input3")), UnorderedElementsAre(Name("output")));
 }
 
 TEST(TestWorkflow, test_pipe_repeat) {

@@ -7,23 +7,22 @@ workflow::Workflow::Workflow() : identifier(0) {}
 
 // TODO: throw exception when inputs or outputs have same names
 std::shared_ptr<workflow::Step>
-workflow::Workflow::add_step(const std::string &step_,
-                             const std::vector<std::string> &ins_,
-                             const std::vector<std::string> &outs_)
+workflow::Workflow::add_step(const std::string &step_name,
+                             const std::vector<std::string> &input_names,
+                             const std::vector<std::string> &output_names)
 {
-    std::shared_ptr<Step> step(new Step(this->identifier++, step_));
-    this->graph.add_vertex<step_partition>(step->identifier, step);
+    std::shared_ptr<Step> step(new Step(this->identifier++, step_name));
 
-    for (const auto &in_ : ins_) {
-        std::shared_ptr<Input> input(new Input(this->identifier++, in_));
-        step->ins[in_] = input;
+    this->graph.add_vertex<step_partition>(step->identifier, step);
+    for (const auto &input_name : input_names) {
+        std::shared_ptr<Input> input(new Input(this->identifier++, input_name));
+        step->_ins[input_name] = input;
         this->graph.add_vertex<input_partition>(input->identifier, input);
         this->graph.add_edge(input->identifier, step->identifier);
     }
-
-    for (const auto &out : outs_) {
-        std::shared_ptr<Output> output(new Output(this->identifier++, out, this->graph));
-        step->outs[out] = output;
+    for (const auto &output_name : output_names) {
+        std::shared_ptr<Output> output(new Output(this->identifier++, output_name, this->graph));
+        step->_outs[output_name] = output;
         this->graph.add_vertex<output_partition>(output->identifier, output);
         this->graph.add_edge(step->identifier, output->identifier);
     }
@@ -31,7 +30,7 @@ workflow::Workflow::add_step(const std::string &step_,
     return step;
 }
 
-std::unordered_set<std::shared_ptr<workflow::Input>>
+const std::unordered_set<std::shared_ptr<workflow::Input>>
 workflow::Workflow::get_connected_inputs(const std::shared_ptr<workflow::Step> &step) const {
     std::unordered_set<std::shared_ptr<workflow::Input>> inputs;
     for (auto input : this->graph.get_parents(step->identifier)) {
@@ -40,7 +39,7 @@ workflow::Workflow::get_connected_inputs(const std::shared_ptr<workflow::Step> &
     return inputs;
 }
 
-std::unordered_set<std::shared_ptr<workflow::Output>>
+const std::unordered_set<std::shared_ptr<workflow::Output>>
 workflow::Workflow::get_connected_outputs(const std::shared_ptr<workflow::Step> &step) const {
     std::unordered_set<std::shared_ptr<workflow::Output>> outputs;
     for (auto output : this->graph.get_children(step->identifier)) {
@@ -49,7 +48,7 @@ workflow::Workflow::get_connected_outputs(const std::shared_ptr<workflow::Step> 
     return outputs;
 }
 
-std::unordered_set<std::shared_ptr<workflow::Output>>
+const std::unordered_set<std::shared_ptr<workflow::Output>>
 workflow::Workflow::get_connected_outputs(const std::shared_ptr<workflow::Input> &input) const {
     std::unordered_set<std::shared_ptr<workflow::Output>> outputs;
     for (auto output : this->graph.get_parents(input->identifier)) {
@@ -58,7 +57,7 @@ workflow::Workflow::get_connected_outputs(const std::shared_ptr<workflow::Input>
     return outputs;
 }
 
-std::unordered_set<std::shared_ptr<workflow::Step>>
+const std::unordered_set<std::shared_ptr<workflow::Step>>
 workflow::Workflow::get_connected_steps(const std::shared_ptr<workflow::Input> &input) const {
     std::unordered_set<std::shared_ptr<workflow::Step>> steps;
     for (auto step : this->graph.get_children(input->identifier)) {
@@ -67,7 +66,7 @@ workflow::Workflow::get_connected_steps(const std::shared_ptr<workflow::Input> &
     return steps;
 }
 
-std::unordered_set<std::shared_ptr<workflow::Step>>
+const std::unordered_set<std::shared_ptr<workflow::Step>>
 workflow::Workflow::get_connected_steps(const std::shared_ptr<workflow::Output> &output) const {
     std::unordered_set<std::shared_ptr<workflow::Step>> steps;
     for (auto step : this->graph.get_parents(output->identifier)) {
@@ -76,7 +75,7 @@ workflow::Workflow::get_connected_steps(const std::shared_ptr<workflow::Output> 
     return steps;
 }
 
-std::unordered_set<std::shared_ptr<workflow::Input>>
+const std::unordered_set<std::shared_ptr<workflow::Input>>
 workflow::Workflow::get_connected_inputs(const std::shared_ptr<workflow::Output> &output) const {
     std::unordered_set<std::shared_ptr<workflow::Input>> inputs;
     for (auto input : this->graph.get_children(output->identifier)) {
