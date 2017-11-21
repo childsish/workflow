@@ -7,7 +7,6 @@ enum { step_partition, input_partition, output_partition };
 
 workflow::Workflow::Workflow() : identifier(0) {}
 
-// TODO: throw exception when inputs or outputs have same names
 std::shared_ptr<workflow::Step>
 workflow::Workflow::add_step(const std::string &step_name,
                              const std::vector<std::string> &input_names,
