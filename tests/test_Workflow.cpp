@@ -22,8 +22,38 @@ TEST(TestWorkflow, test_add_step) {
 TEST(TestWorkflow, test_add_step_with_repeat_names) {
     workflow::Workflow workflow;
 
-    EXPECT_THROW(workflow.add_step("step", {"input", "input"}, {}), std::runtime_error);
-    EXPECT_THROW(workflow.add_step("step", {}, {"output", "output"}), std::runtime_error);
+    try {
+        workflow.add_step("step", {"input", "input"}, {});
+    }
+    catch (std::runtime_error &error) {
+        std::cout << error.what() << std::endl;
+        EXPECT_EQ(error.what(), std::string("Duplicate input names: input."));
+    }
+    catch (...) {
+        FAIL() << "Expected std::runtime_error.";
+    }
+
+    try {
+        workflow.add_step("step", {"input1", "input1", "input2", "input2"}, {});
+    }
+    catch (std::runtime_error &error) {
+        std::cout << error.what() << std::endl;
+        EXPECT_EQ(error.what(), std::string("Duplicate input names: input1, input2."));
+    }
+    catch (...) {
+        FAIL() << "Expected std::runtime_error.";
+    }
+
+    try {
+        workflow.add_step("step", {}, {"output", "output"});
+    }
+    catch (std::runtime_error &error) {
+        std::cout << error.what() << std::endl;
+        EXPECT_EQ(error.what(), std::string("Duplicate output names: output."));
+    }
+    catch (...) {
+        FAIL() << "Expected std::runtime_error.";
+    }
 }
 
 TEST(TestWorkflow, test_pipe_one_to_one) {

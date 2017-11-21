@@ -30,25 +30,47 @@ namespace workflow {
 
         Workflow();
 
-        std::shared_ptr<Step> add_step(const std::string &step, const std::vector<std::string> &ins, const std::vector<std::string> &outs);
+        /**
+         * Add a step to the workflow and get a helper class to connect multiple steps together. Steps are permitted to
+         * have the same names, but their inputs and outputs must be unique.
+         * @brief add step and get connection helper
+         * @param step name of the step
+         * @param ins names of the inputs
+         * @param outs names of the outputs
+         * @return helper for piping steps together
+         */
+        std::shared_ptr<Step>
+        add_step(const std::string &step,
+                 const std::vector<std::string> &ins,
+                 const std::vector<std::string> &outs);
 
-        const std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Step> &step) const;
+        const std::unordered_set<std::shared_ptr<Input>>
+        get_connected_inputs(const std::shared_ptr<Step> &step) const;
 
-        const std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Step> &step) const;
+        const std::unordered_set<std::shared_ptr<Output>>
+        get_connected_outputs(const std::shared_ptr<Step> &step) const;
 
-        const std::unordered_set<std::shared_ptr<Output>> get_connected_outputs(const std::shared_ptr<Input> &input) const;
+        const std::unordered_set<std::shared_ptr<Output>>
+        get_connected_outputs(const std::shared_ptr<Input> &input) const;
 
-        const std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Input> &input) const;
+        const std::unordered_set<std::shared_ptr<Step>>
+        get_connected_steps(const std::shared_ptr<Input> &input) const;
 
-        const std::unordered_set<std::shared_ptr<Step>> get_connected_steps(const std::shared_ptr<Output> &output) const;
+        const std::unordered_set<std::shared_ptr<Step>>
+        get_connected_steps(const std::shared_ptr<Output> &output) const;
 
-        const std::unordered_set<std::shared_ptr<Input>> get_connected_inputs(const std::shared_ptr<Output> &output) const;
+        const std::unordered_set<std::shared_ptr<Input>>
+        get_connected_inputs(const std::shared_ptr<Output> &output) const;
 
     private:
 
         unsigned int identifier;
 
         WorkflowGraph graph;
+
+        void reject_duplicates(const std::vector<std::string> &names, const std::string &source) const;
+
+        std::vector<std::string> get_duplicates(const std::vector<std::string> &names) const;
 
     };
 }
