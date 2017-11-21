@@ -5,23 +5,24 @@ enum { step_partition, input_partition, output_partition };
 
 workflow::Workflow::Workflow() : identifier(0) {}
 
+// TODO: throw exception when inputs or outputs have same names
 std::shared_ptr<workflow::Step>
 workflow::Workflow::add_step(const std::string &step_,
                              const std::vector<std::string> &ins_,
                              const std::vector<std::string> &outs_)
 {
-    auto step = std::make_shared<workflow::Step>(this->identifier++, step_);
+    std::shared_ptr<Step> step(new Step(this->identifier++, step_));
     this->graph.add_vertex<step_partition>(step->identifier, step);
 
     for (const auto &in_ : ins_) {
-        auto input = std::make_shared<workflow::Input>(this->identifier++, in_);
+        std::shared_ptr<Input> input(new Input(this->identifier++, in_));
         step->ins[in_] = input;
         this->graph.add_vertex<input_partition>(input->identifier, input);
         this->graph.add_edge(input->identifier, step->identifier);
     }
 
     for (const auto &out : outs_) {
-        auto output = std::make_shared<workflow::Output>(this->identifier++, out, this->graph);
+        std::shared_ptr<Output> output(new Output(this->identifier++, out, this->graph));
         step->outs[out] = output;
         this->graph.add_vertex<output_partition>(output->identifier, output);
         this->graph.add_edge(step->identifier, output->identifier);
