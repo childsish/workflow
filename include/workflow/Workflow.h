@@ -22,7 +22,6 @@ namespace workflow {
      * A workflow is a collection of steps with interconnected inputs and outputs. This class facilitates the
      * construction of the topology of a workflow by allowing the user to create steps and directly connecting the
      * outputs to inputs.
-     * TODO: make shared step pointers unique
      * @brief a workflow
      */
     class Workflow {
