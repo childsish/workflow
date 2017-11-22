@@ -4,6 +4,7 @@
 #include <memory>
 #include "Input.h"
 #include "Output.h"
+#include "Vertex.h"
 
 namespace workflow {
 
@@ -15,11 +16,8 @@ namespace workflow {
      * output and/or input.
      * @brief step in a workflow
      */
-    class Step {
+    class Step : public Vertex {
     public:
-
-        const unsigned int identifier;
-        const std::string name;
 
         /**
          * Pipe the single output of this step to the single input of another. If there are multiple outputs or inputs,
@@ -45,7 +43,7 @@ namespace workflow {
         std::unordered_map<std::string, std::shared_ptr<Input>> _ins;
         std::unordered_map<std::string, std::shared_ptr<Output>> _outs;
 
-        Step(unsigned int identifier, const std::string &name);
+        explicit Step(std::string name);
 
     };
 }

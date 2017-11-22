@@ -1,7 +1,9 @@
 #ifndef WORKFLOW_INPUT_H
 #define WORKFLOW_INPUT_H
 
+
 #include <string>
+#include "Vertex.h"
 
 namespace workflow {
 
@@ -12,11 +14,8 @@ namespace workflow {
      * `Step::ins` member. `Input` can be piped to from an `Output` object.
      * @brief input to a step
      */
-    class Input {
+    class Input : public Vertex {
     public:
-
-        const unsigned int identifier;
-        const std::string name;
 
         Input(const Input &) = delete;
         Input &operator=(const Input &) = delete;
@@ -25,9 +24,10 @@ namespace workflow {
 
         friend Workflow;
 
-        Input(unsigned int identifier, const std::string &name);
+        explicit Input(std::string name);
 
     };
 }
+
 
 #endif //WORKFLOW_INPUT_H

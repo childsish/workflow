@@ -4,6 +4,7 @@
 #include <memory>
 #include <graph/PartiteGraph.h>
 #include "Input.h"
+#include "Vertex.h"
 
 namespace workflow {
 
@@ -23,11 +24,8 @@ namespace workflow {
      * `Step::outs` member. `Output` can be piped from to an `Input` object.
      * @brief output from a step
      */
-    class Output {
+    class Output : public Vertex {
     public:
-
-        const unsigned int identifier;
-        const std::string name;
 
         /**
          * Connect the output of a step to the input of another.
@@ -40,7 +38,7 @@ namespace workflow {
 
         friend Workflow;
 
-        Output(unsigned int identifier, const std::string &name, WorkflowGraph &graph);
+        Output(std::string name, WorkflowGraph &graph);
 
         WorkflowGraph &graph;
 

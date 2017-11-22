@@ -26,6 +26,5 @@ const std::shared_ptr<workflow::Output> workflow::Step::outs(const std::string &
     return this->_outs.at(name);
 }
 
-workflow::Step::Step(unsigned int identifier_, const std::string &name_) :
-        identifier(identifier_),
-        name(name_) {}
+workflow::Step::Step(std::string name) :
+        workflow::Vertex(std::move(name)) {}
