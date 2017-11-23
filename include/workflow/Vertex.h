@@ -14,11 +14,7 @@ namespace workflow {
 
     protected:
 
-        explicit Vertex(std::string name_) :
-                identifier(IDENTIFIER),
-                name(std::move(name_)) {
-            IDENTIFIER += 1;
-        }
+        explicit Vertex(std::string name);
 
     private:
 
@@ -27,6 +23,5 @@ namespace workflow {
     };
 }
 
-unsigned int workflow::Vertex::IDENTIFIER = 0;
 
 #endif //WORKFLOW_VERTEX_H

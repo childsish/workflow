@@ -17,7 +17,7 @@ add_subdirectory(lib/graph)
 # Add workflow library
 
 add_library(workflow
-        include/workflow/Vertex.h
+        src/Vertex.cpp include/workflow/Vertex.h
         src/Input.cpp include/workflow/Input.h
         src/Output.cpp include/workflow/Output.h
         src/Step.cpp include/workflow/Step.h
