@@ -7,7 +7,7 @@ be connected to many *inputs*, but an *input* can be connected to only one *outp
 simplified into simply piping workflow steps into each other.
 
 Executing workflows is not implemented nor intended for this library. If you wish to execute workflows defined and built
-using this library consider using [ mimo ](1).
+using this library consider using [ mimo ](https://github.com/childsish/mimo).
 
 ## Simple piping
 
@@ -55,5 +55,3 @@ auto step3 = workflow.add_step("step2", {"input2"}, {});
 step1->pipe(step2);
 step1->pipe(step3);
 ```
-
-[1]: https://github.com/childsish/mimo
