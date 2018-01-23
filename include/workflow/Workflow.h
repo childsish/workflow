@@ -41,6 +41,8 @@ namespace workflow {
                  const std::vector<std::string> &ins,
                  const std::vector<std::string> &outs);
 
+        const WorkflowGraph::Partition &get_steps() const;
+
         const std::unordered_set<std::shared_ptr<Input>>
         get_connected_inputs(const std::shared_ptr<Step> &step) const;
 
