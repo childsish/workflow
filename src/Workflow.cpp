@@ -32,8 +32,8 @@ workflow::Workflow::add_step(const std::string &step_name,
     return step;
 }
 
-const workflow::WorkflowGraph::Partition &workflow::Workflow::get_steps() const {
-    return this->graph.get_partition<1>();
+const workflow::WorkflowGraph::FirstPartition<0> &workflow::Workflow::get_steps() const {
+    return this->graph.get_partition<0>();
 }
 
 const std::unordered_set<std::shared_ptr<workflow::Input>>

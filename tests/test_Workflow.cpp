@@ -11,49 +11,23 @@ MATCHER_P(Name, name, "") {
 
 TEST(TestWorkflow, test_add_step) {
     workflow::Workflow workflow;
-    auto step = workflow.add_step("step", {"input1", "input2"}, {"output1", "output2"});
 
+    EXPECT_TRUE(workflow.get_steps().empty());
+
+    auto step = workflow.add_step("step", {"input1", "input2"}, {"output1", "output2"});
     EXPECT_THAT(workflow.get_connected_inputs(step), UnorderedElementsAre(Name("input1"), Name("input2")));
     EXPECT_THAT(workflow.get_connected_outputs(step), UnorderedElementsAre(Name("output1"), Name("output2")));
     EXPECT_THAT(workflow.get_connected_steps(step->ins("input1")), UnorderedElementsAre(Name("step")));
     EXPECT_THAT(workflow.get_connected_steps(step->outs("output1")), UnorderedElementsAre(Name("step")));
+    EXPECT_EQ(workflow.get_steps().size(), 1);
 }
 
 TEST(TestWorkflow, test_add_step_with_repeat_names) {
     workflow::Workflow workflow;
 
-    try {
-        workflow.add_step("step", {"input", "input"}, {});
-    }
-    catch (std::runtime_error &error) {
-        std::cout << error.what() << std::endl;
-        EXPECT_EQ(error.what(), std::string("Duplicate input names: input."));
-    }
-    catch (...) {
-        FAIL() << "Expected std::runtime_error.";
-    }
-
-    try {
-        workflow.add_step("step", {"input1", "input1", "input2", "input2"}, {});
-    }
-    catch (std::runtime_error &error) {
-        std::cout << error.what() << std::endl;
-        EXPECT_EQ(error.what(), std::string("Duplicate input names: input1, input2."));
-    }
-    catch (...) {
-        FAIL() << "Expected std::runtime_error.";
-    }
-
-    try {
-        workflow.add_step("step", {}, {"output", "output"});
-    }
-    catch (std::runtime_error &error) {
-        std::cout << error.what() << std::endl;
-        EXPECT_EQ(error.what(), std::string("Duplicate output names: output."));
-    }
-    catch (...) {
-        FAIL() << "Expected std::runtime_error.";
-    }
+    EXPECT_THROW(workflow.add_step("step", {"input", "input"}, {}), std::runtime_error);
+    EXPECT_THROW(workflow.add_step("step", {"input1", "input1", "input2", "input2"}, {});, std::runtime_error);
+    EXPECT_THROW(workflow.add_step("step", {}, {"output", "output"}), std::runtime_error);
 }
 
 TEST(TestWorkflow, test_pipe_one_to_one) {
