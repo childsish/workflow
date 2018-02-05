@@ -26,7 +26,7 @@ step1->pipe(step2);
 
 ## Choosing which input/output to pipe to/from
 
-If there are multiple inputs/outputs to choose from, the member variables `Step::ins` and `Step:outs` can be used to
+If there are multiple inputs/outputs to choose from, the member variables `Step::get_inputs` and `Step:get_outputs` can be used to
 distinguish which input or output to use. 
 
 ```cpp
@@ -36,7 +36,7 @@ workflow::Workflow workflow;
 auto step1 = workflow.add_step("step1", {}, {"output1", "output2"});
 auto step2 = workflow.add_step("step2", {"input1", "input2"}, {});
 
-step1->outs("output2")->pipe(step2->ins("input2"));
+step1->get_outputs("output2")->pipe(step2->get_inputs("input2"));
 ```
 
 ## Piping an output to multiple input

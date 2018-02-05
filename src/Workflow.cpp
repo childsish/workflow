@@ -18,13 +18,13 @@ workflow::Workflow::add_step(const std::string &step_name,
     this->graph.add_vertex<step_partition>(step->identifier, step);
     for (const auto &input_name : input_names) {
         std::shared_ptr<Input> input(new Input(input_name));
-        step->_ins[input_name] = input;
+        step->inputs[input_name] = input;
         this->graph.add_vertex<input_partition>(input->identifier, input);
         this->graph.add_edge(input->identifier, step->identifier);
     }
     for (const auto &output_name : output_names) {
         std::shared_ptr<Output> output(new Output(output_name, this->graph));
-        step->_outs[output_name] = output;
+        step->outputs[output_name] = output;
         this->graph.add_vertex<output_partition>(output->identifier, output);
         this->graph.add_edge(step->identifier, output->identifier);
     }

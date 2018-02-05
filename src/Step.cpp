@@ -1,29 +1,37 @@
 #include "Step.h"
 
 void workflow::Step::pipe(const std::shared_ptr<workflow::Step> &target) {
-    if (this->_outs.size() == 1 && target->_ins.size() == 1) {
-        this->_outs.begin()->second->pipe(target->_ins.begin()->second);
+    if (this->outputs.size() == 1 && target->inputs.size() == 1) {
+        this->outputs.begin()->second->pipe(target->inputs.begin()->second);
     }
-    else if (this->_outs.empty()) {
+    else if (this->outputs.empty()) {
         throw std::runtime_error("Nothing to pipe from in step " + this->name);
     }
-    else if (this->_outs.size() > 1) {
+    else if (this->outputs.size() > 1) {
         throw std::runtime_error("Too many outputs to pipe from in step " + this->name);
     }
-    else if (target->_ins.empty()) {
+    else if (target->inputs.empty()) {
         throw std::runtime_error("Nothing to pipe to in step " + target->name);
     }
-    else if (target->_ins.size() > 1) {
+    else if (target->inputs.size() > 1) {
         throw std::runtime_error("Too many inputs to pipe to in step " + target->name);
     }
 }
 
-const std::shared_ptr<workflow::Input> workflow::Step::ins(const std::string &name) const {
-    return this->_ins.at(name);
+const workflow::InputMap &workflow::Step::get_inputs() const {
+    return this->inputs;
 }
 
-const std::shared_ptr<workflow::Output> workflow::Step::outs(const std::string &name) const {
-    return this->_outs.at(name);
+const std::shared_ptr<workflow::Input> workflow::Step::get_inputs(const std::string &name) const {
+    return this->inputs.at(name);
+}
+
+const workflow::OutputMap &workflow::Step::get_outputs() const {
+    return this->outputs;
+}
+
+const std::shared_ptr<workflow::Output> workflow::Step::get_outputs(const std::string &name) const {
+    return this->outputs.at(name);
 }
 
 workflow::Step::Step(std::string name) :

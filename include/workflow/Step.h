@@ -9,6 +9,8 @@
 namespace workflow {
 
     class Workflow;
+    typedef std::unordered_map<std::string, std::shared_ptr<Input>> InputMap;
+    typedef std::unordered_map<std::string, std::shared_ptr<Output>> OutputMap;
 
     /**
      * A single step in a workflow containing inputs and outputs. `Step` can not be created directly and must be
@@ -33,15 +35,17 @@ namespace workflow {
          * @param name name of the input/output to get
          * @return input/output object
          */
-        const std::shared_ptr<Input> ins(const std::string &name) const;
-        const std::shared_ptr<Output> outs(const std::string &name) const;
+        const InputMap &get_inputs() const;
+        const std::shared_ptr<Input> get_inputs(const std::string &name) const;
+        const OutputMap &get_outputs() const;
+        const std::shared_ptr<Output> get_outputs(const std::string &name) const;
 
     private:
 
         friend Workflow;
 
-        std::unordered_map<std::string, std::shared_ptr<Input>> _ins;
-        std::unordered_map<std::string, std::shared_ptr<Output>> _outs;
+        InputMap inputs;
+        OutputMap outputs;
 
         explicit Step(std::string name);
 
