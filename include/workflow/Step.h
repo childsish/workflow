@@ -14,10 +14,9 @@ namespace workflow {
     typedef std::unordered_map<std::string, std::shared_ptr<Input>> InputMap;
     typedef std::unordered_map<std::string, std::shared_ptr<Output>> OutputMap;
 
-    /**
-     * @brief step in a workflow
-     * A single step in a workflow containing inputs and outputs. `Step` can not be created directly
-     * and must be obtained via the `Workflow::add_step` member. `Steps` can be piped directly to
+    /** @brief A step in a workflow.
+     *
+     * A single step in a workflow containing inputs and outputs. `Steps` can be piped directly to
      * each other if they have only one output and/or input.
      */
     class Step : public Vertex {
@@ -30,24 +29,22 @@ namespace workflow {
             std::shared_ptr<WorkflowGraph> graph
         );
 
-        /**
-         * Pipe the single output of this step to the single input of another. If there are multiple outputs or inputs,
-         * then an exception will be thrown.
-         * @brief connect output to another steps' input
-         * @param target step with single input
+        /** @brief Connect this step's output to another step's input.
+         *
+         * Pipe the single output of this step to the single input of another. If there are multiple
+         * outputs or inputs, then an exception will be thrown.
          */
         void pipe(const std::shared_ptr<Step> &target);
 
-        /**
-         * Getters for the inputs and outputs connected to the step
-         * @brief get named inputs and outputs
-         * @param name name of the input/output to get
-         * @return input/output object
-         */
+        /** @name Getters for named inputs and outputs */
         /**@{*/
+        /** @brief Get all inputs. */
         const InputMap &get_inputs() const;
-        const std::shared_ptr<Input> get_input(const std::string &name) const;
+        /** @brief Get all outputs. */
         const OutputMap &get_outputs() const;
+        /** @brief Get named input. */
+        const std::shared_ptr<Input> get_input(const std::string &name) const;
+        /** @brief Get named output. */
         const std::shared_ptr<Output> get_output(const std::string &name) const;
         /**@}*/
 
@@ -65,6 +62,17 @@ namespace workflow {
 }
 
 namespace std {
+
+    /** @brief Hash object for hashing steps.
+     *
+     * For example:
+     * @code
+     * std::unsorted_map<std::shared_ptr<Step>, std::shared_ptr<Job>> jobs;
+     * Workflow workflow;
+     * std::shared_ptr<Step> step = workflow.add_step("step_name", {"input"}, {"output"});
+     * jobs[step] = std::make_shared<Job>();
+     * @endcode
+     */
     template <>
     struct hash<workflow::Step> {
         size_t operator()(const workflow::Step &step) const {

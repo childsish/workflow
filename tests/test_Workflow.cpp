@@ -20,8 +20,8 @@ TEST(TestWorkflow, test_add_step) {
     auto step = workflow.add_step("step", {"input1", "input2"}, {"output1", "output2"});
     EXPECT_THAT(workflow.get_connected_inputs(step), UnorderedElementsAre(Name("input1"), Name("input2")));
     EXPECT_THAT(workflow.get_connected_outputs(step), UnorderedElementsAre(Name("output1"), Name("output2")));
-    EXPECT_THAT(workflow.get_connected_steps(step->get_input("input1")), UnorderedElementsAre(Name("step")));
-    EXPECT_THAT(workflow.get_connected_steps(step->get_output("output1")), UnorderedElementsAre(Name("step")));
+    EXPECT_THAT(workflow.get_connected_step(step->get_input("input1")), Name("step"));
+    EXPECT_THAT(workflow.get_connected_step(step->get_output("output1")), Name("step"));
     EXPECT_EQ(workflow.get_steps().size(), 1);
 }
 

@@ -46,12 +46,12 @@ const workflow::InputMap &workflow::Step::get_inputs() const {
     return this->inputs;
 }
 
-const std::shared_ptr<workflow::Input> workflow::Step::get_input(const std::string &name) const {
-    return this->inputs.at(name);
-}
-
 const workflow::OutputMap &workflow::Step::get_outputs() const {
     return this->outputs;
+}
+
+const std::shared_ptr<workflow::Input> workflow::Step::get_input(const std::string &name) const {
+    return this->inputs.at(name);
 }
 
 const std::shared_ptr<workflow::Output> workflow::Step::get_output(const std::string &name) const {
