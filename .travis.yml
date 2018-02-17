@@ -3,11 +3,6 @@ sudo: require
 language: cpp
 compiler: gcc
 
-# Blacklist
-branches:
-  only:
-    - master
-
 # Environment variables
 env:
   global:
