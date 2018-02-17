@@ -1,6 +1,7 @@
+# workflow
+
 [![Build Status](https://travis-ci.org/childsish/workflow.svg?branch=master)](https://travis-ci.org/childsish/workflow)
 
-# workflow
 *workflow* is a library that provides a common workflow implementation for projects that use
 workflows. The implemented *workflow* is composed of two or more *steps*. Each step can have zero or
 more *inputs* and *outputs*. An *output* can be connected to many *inputs*, but an *input* can be
@@ -8,7 +9,7 @@ connected to only one *output*. Constructing workflows is simplified into simply
 steps into each other.
 
 Executing workflows is not implemented nor intended for this library. If you wish to execute
-workflows defined and built using this library consider using [ mimo ](1).
+workflows defined and built using this library consider using [mimo][1].
 
 ## Simple piping
 
@@ -59,6 +60,6 @@ step1->pipe(step3);
 
 ## Steps as keys
 
-Steps can be used as keys in std:map and std::unordered_map. 
+`workflow::Step` can be used as keys in std:map and std::unordered_map. 
 
 [1]: https://github.com/childsish/mimo

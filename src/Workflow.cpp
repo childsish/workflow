@@ -65,22 +65,22 @@ workflow::Workflow::get_connected_outputs(const std::shared_ptr<workflow::Input>
     return outputs;
 }
 
-const std::unordered_set<std::shared_ptr<workflow::Step>>
-workflow::Workflow::get_connected_steps(const std::shared_ptr<workflow::Input> &input) const {
-    std::unordered_set<std::shared_ptr<workflow::Step>> steps;
-    for (const auto &step : this->graph->get_children(input->identifier)) {
-        steps.insert(this->graph->get_vertex<step_partition>(step));
+const std::shared_ptr<workflow::Step>
+workflow::Workflow::get_connected_step(const std::shared_ptr<workflow::Input> &input) const {
+    auto steps = this->graph->get_children(input->identifier);
+    if (steps.size() != 1) {
+        throw std::runtime_error("Step for input is missing");
     }
-    return steps;
+    return this->graph->get_vertex<step_partition>(*steps.begin());
 }
 
-const std::unordered_set<std::shared_ptr<workflow::Step>>
-workflow::Workflow::get_connected_steps(const std::shared_ptr<workflow::Output> &output) const {
-    std::unordered_set<std::shared_ptr<workflow::Step>> steps;
-    for (const auto &step : this->graph->get_parents(output->identifier)) {
-        steps.insert(this->graph->get_vertex<step_partition>(step));
+const std::shared_ptr<workflow::Step>
+workflow::Workflow::get_connected_step(const std::shared_ptr<workflow::Output> &output) const {
+    auto steps = this->graph->get_parents(output->identifier);
+    if (steps.size() != 1) {
+        throw std::runtime_error("Step for output is missing");
     }
-    return steps;
+    return this->graph->get_vertex<step_partition>(*steps.begin());
 }
 
 const std::unordered_set<std::shared_ptr<workflow::Input>>
