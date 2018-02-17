@@ -1,0 +1,5 @@
+<map id="workflow::Vertex" name="workflow::Vertex">
+<area shape="rect" id="node2" href="$classworkflow_1_1Input.html" title="Named input to a step. " alt="" coords="5,80,115,107"/>
+<area shape="rect" id="node3" href="$classworkflow_1_1Output.html" title="Named output from a step. " alt="" coords="139,80,260,107"/>
+<area shape="rect" id="node4" href="$classworkflow_1_1Step.html" title="A step in a workflow. " alt="" coords="285,80,395,107"/>
+</map>

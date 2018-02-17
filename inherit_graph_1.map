@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classworkflow_1_1Vertex.html" title="A unique named vertex in a workflow. " alt="" coords="5,56,125,83"/>
+<area shape="rect" id="node2" href="$classworkflow_1_1Input.html" title="Named input to a step. " alt="" coords="179,5,290,32"/>
+<area shape="rect" id="node3" href="$classworkflow_1_1Output.html" title="Named output from a step. " alt="" coords="174,56,295,83"/>
+<area shape="rect" id="node4" href="$classworkflow_1_1Step.html" title="A step in a workflow. " alt="" coords="180,107,289,133"/>
+</map>
