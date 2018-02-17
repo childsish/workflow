@@ -64,4 +64,13 @@ namespace workflow {
     };
 }
 
+namespace std {
+    template <>
+    struct hash<workflow::Step> {
+        size_t operator()(const workflow::Step &step) const {
+            return hash<unsigned int>()(step.identifier);
+        }
+    };
+}
+
 #endif //WORKFLOW_STEP_H
