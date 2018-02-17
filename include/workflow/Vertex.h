@@ -18,7 +18,6 @@ namespace workflow {
         Vertex &operator=(const Vertex &) = delete;
         virtual ~Vertex() = default;
 
-
         /** @brief Compare two vertices. Equivalence is determined by the unique identifier. */
         bool operator==(const Vertex &that) const;
 

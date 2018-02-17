@@ -20,6 +20,8 @@ namespace workflow {
     class Workflow {
     public:
 
+        Workflow();
+
         /**
          * Add a step to the workflow and get a helper class to connect multiple steps together. Steps are permitted to
          * have the same names, but their inputs and outputs must be unique.
