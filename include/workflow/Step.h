@@ -44,10 +44,12 @@ namespace workflow {
          * @param name name of the input/output to get
          * @return input/output object
          */
+        /**@{*/
         const InputMap &get_inputs() const;
-        const std::shared_ptr<Input> get_inputs(const std::string &name) const;
+        const std::shared_ptr<Input> get_input(const std::string &name) const;
         const OutputMap &get_outputs() const;
-        const std::shared_ptr<Output> get_outputs(const std::string &name) const;
+        const std::shared_ptr<Output> get_output(const std::string &name) const;
+        /**@}*/
 
     private:
 

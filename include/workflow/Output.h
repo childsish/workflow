@@ -2,22 +2,12 @@
 #define WORKFLOW_OUTPUT_H
 
 #include <memory>
-#include <graph/PartiteGraph.h>
-#include "Input.h"
 #include "Vertex.h"
+#include "WorkflowGraph.h"
 
 namespace workflow {
 
-    class Output;
-    class Step;
-    class Workflow;
-
-    typedef graph::PartiteGraph<
-            unsigned int,
-            std::shared_ptr<Step>,
-            std::shared_ptr<Input>,
-            std::shared_ptr<Output>
-    > WorkflowGraph;
+    class Input;
 
     /**
      * A helper class representing output from a step. `Output` can not be created directly and must be obtained via the
@@ -26,6 +16,8 @@ namespace workflow {
      */
     class Output : public Vertex {
     public:
+
+        Output(std::string name, std::shared_ptr<WorkflowGraph> graph);
 
         /**
          * Connect the output of a step to the input of another.
@@ -36,11 +28,7 @@ namespace workflow {
 
     private:
 
-        friend Workflow;
-
-        Output(std::string name, WorkflowGraph &graph);
-
-        WorkflowGraph &graph;
+        std::shared_ptr<WorkflowGraph> graph;
 
     };
 }
