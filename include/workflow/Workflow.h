@@ -4,12 +4,13 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "Input.h"
-#include "Output.h"
-#include "Step.h"
 #include "WorkflowGraph.h"
 
 namespace workflow {
+
+    class Input;
+    class Output;
+    class Step;
 
     /**
      * A workflow is a collection of steps with interconnected inputs and outputs. This class facilitates the
@@ -31,10 +32,9 @@ namespace workflow {
          * @param outs names of the outputs
          * @return helper for piping steps together
          */
-        std::shared_ptr<Step>
-        add_step(const std::string &step,
-                 const std::vector<std::string> &ins,
-                 const std::vector<std::string> &outs);
+        std::shared_ptr<Step> add_step(const std::string &step,
+                                       const std::vector<std::string> &ins,
+                                       const std::vector<std::string> &outs);
 
         const WorkflowGraph::FirstPartition<0> &get_steps() const;
 

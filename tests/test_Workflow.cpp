@@ -1,6 +1,9 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
+#include <workflow/Input.h>
+#include <workflow/Output.h>
+#include <workflow/Step.h>
 #include <workflow/Workflow.h>
 
 using ::testing::UnorderedElementsAre;

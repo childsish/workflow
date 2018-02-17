@@ -1,3 +1,7 @@
+#include "Input.h"
+#include "Output.h"
+#include "Step.h"
+
 #include "Workflow.h"
 
 
@@ -11,7 +15,7 @@ std::shared_ptr<workflow::Step> workflow::Workflow::add_step(
     const std::vector<std::string> &input_names,
     const std::vector<std::string> &output_names)
 {
-    std::shared_ptr<Step> step = std::make_shared<Step>(
+    auto step = std::make_shared<Step>(
         step_name,
         input_names,
         output_names,

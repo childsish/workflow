@@ -23,7 +23,7 @@ namespace workflow {
     class Step : public Vertex {
     public:
 
-        explicit Step(
+        Step(
             const std::string &name,
             const std::vector<std::string> &input_names,
             const std::vector<std::string> &output_names,

@@ -56,3 +56,9 @@ auto step3 = workflow.add_step("step2", {"input2"}, {});
 step1->pipe(step2);
 step1->pipe(step3);
 ```
+
+## Steps as keys
+
+Steps can be used as keys in std:map and std::unordered_map. 
+
+[1]: https://github.com/childsish/mimo
