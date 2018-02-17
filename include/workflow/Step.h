@@ -2,24 +2,33 @@
 #define WORKFLOW_STEP_H
 
 #include <memory>
-#include "Input.h"
-#include "Output.h"
+#include <unordered_map>
+#include <vector>
 #include "Vertex.h"
+#include "WorkflowGraph.h"
 
 namespace workflow {
 
-    class Workflow;
+    class Input;
+    class Output;
     typedef std::unordered_map<std::string, std::shared_ptr<Input>> InputMap;
     typedef std::unordered_map<std::string, std::shared_ptr<Output>> OutputMap;
 
     /**
-     * A single step in a workflow containing inputs and outputs. `Step` can not be created directly and must be
-     * obtained via the `Workflow::add_step` member. `Steps` can be piped directly to each other if they have only one
-     * output and/or input.
      * @brief step in a workflow
+     * A single step in a workflow containing inputs and outputs. `Step` can not be created directly
+     * and must be obtained via the `Workflow::add_step` member. `Steps` can be piped directly to
+     * each other if they have only one output and/or input.
      */
     class Step : public Vertex {
     public:
+
+        explicit Step(
+            const std::string &name,
+            const std::vector<std::string> &input_names,
+            const std::vector<std::string> &output_names,
+            std::shared_ptr<WorkflowGraph> graph
+        );
 
         /**
          * Pipe the single output of this step to the single input of another. If there are multiple outputs or inputs,
@@ -42,12 +51,13 @@ namespace workflow {
 
     private:
 
-        friend Workflow;
-
         InputMap inputs;
         OutputMap outputs;
 
-        explicit Step(std::string name);
+        void reject_duplicates(const std::vector<std::string> &names,
+                               const std::string &source) const;
+
+        std::vector<std::string> get_duplicates(const std::vector<std::string> &names) const;
 
     };
 }

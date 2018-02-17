@@ -4,19 +4,12 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <graph/PartiteGraph.h>
 #include "Input.h"
 #include "Output.h"
 #include "Step.h"
+#include "WorkflowGraph.h"
 
 namespace workflow {
-
-    typedef graph::PartiteGraph<
-            unsigned int,
-            std::shared_ptr<Step>,
-            std::shared_ptr<Input>,
-            std::shared_ptr<Output>
-    > WorkflowGraph;
 
     /**
      * A workflow is a collection of steps with interconnected inputs and outputs. This class facilitates the
@@ -63,11 +56,7 @@ namespace workflow {
 
     private:
 
-        WorkflowGraph graph;
-
-        void reject_duplicates(const std::vector<std::string> &names, const std::string &source) const;
-
-        std::vector<std::string> get_duplicates(const std::vector<std::string> &names) const;
+        std::shared_ptr<WorkflowGraph> graph;
 
     };
 }

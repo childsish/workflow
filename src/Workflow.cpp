@@ -1,18 +1,13 @@
 #include "Workflow.h"
 
-#include <iterator>
-
 
 enum { step_partition, input_partition, output_partition };
-
 
 std::shared_ptr<workflow::Step>
 workflow::Workflow::add_step(const std::string &step_name,
                              const std::vector<std::string> &input_names,
                              const std::vector<std::string> &output_names)
 {
-    this->reject_duplicates(input_names, "input");
-    this->reject_duplicates(output_names, "output");
 
     std::shared_ptr<Step> step(new Step(step_name));
     this->graph.add_vertex<step_partition>(step->identifier, step);
@@ -88,28 +83,4 @@ workflow::Workflow::get_connected_inputs(const std::shared_ptr<workflow::Output>
         inputs.insert(this->graph.get_vertex<input_partition>(input));
     }
     return inputs;
-}
-
-void workflow::Workflow::reject_duplicates(const std::vector<std::string> &names, const std::string &source) const {
-    auto duplicated = this->get_duplicates(names);
-    if (!duplicated.empty()) {
-        std::stringstream buffer;
-        buffer << "Duplicate " << source << " names: ";
-        std::copy(duplicated.begin(), duplicated.end(), std::ostream_iterator<std::string>(buffer, ", "));
-        buffer.seekp(-2, std::ios::end);
-        buffer << ".";
-        throw std::runtime_error(buffer.str().erase(buffer.str().size() - 1));
-    }
-}
-
-std::vector<std::string> workflow::Workflow::get_duplicates(const std::vector<std::string> &names) const {
-    std::vector<std::string> duplicates;
-    std::unordered_set<std::string> visited;
-    for (const auto &name : names) {
-        if (visited.find(name) != visited.end()) {
-            duplicates.push_back(name);
-        }
-        visited.insert(name);
-    }
-    return duplicates;
 }
