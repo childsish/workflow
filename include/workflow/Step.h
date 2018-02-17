@@ -2,22 +2,33 @@
 #define WORKFLOW_STEP_H
 
 #include <memory>
-#include "Input.h"
-#include "Output.h"
+#include <unordered_map>
+#include <vector>
 #include "Vertex.h"
+#include "WorkflowGraph.h"
 
 namespace workflow {
 
-    class Workflow;
+    class Input;
+    class Output;
+    typedef std::unordered_map<std::string, std::shared_ptr<Input>> InputMap;
+    typedef std::unordered_map<std::string, std::shared_ptr<Output>> OutputMap;
 
     /**
-     * A single step in a workflow containing inputs and outputs. `Step` can not be created directly and must be
-     * obtained via the `Workflow::add_step` member. `Steps` can be piped directly to each other if they have only one
-     * output and/or input.
      * @brief step in a workflow
+     * A single step in a workflow containing inputs and outputs. `Step` can not be created directly
+     * and must be obtained via the `Workflow::add_step` member. `Steps` can be piped directly to
+     * each other if they have only one output and/or input.
      */
     class Step : public Vertex {
     public:
+
+        explicit Step(
+            const std::string &name,
+            const std::vector<std::string> &input_names,
+            const std::vector<std::string> &output_names,
+            std::shared_ptr<WorkflowGraph> graph
+        );
 
         /**
          * Pipe the single output of this step to the single input of another. If there are multiple outputs or inputs,
@@ -33,17 +44,22 @@ namespace workflow {
          * @param name name of the input/output to get
          * @return input/output object
          */
-        const std::shared_ptr<Input> ins(const std::string &name) const;
-        const std::shared_ptr<Output> outs(const std::string &name) const;
+        /**@{*/
+        const InputMap &get_inputs() const;
+        const std::shared_ptr<Input> get_input(const std::string &name) const;
+        const OutputMap &get_outputs() const;
+        const std::shared_ptr<Output> get_output(const std::string &name) const;
+        /**@}*/
 
     private:
 
-        friend Workflow;
+        InputMap inputs;
+        OutputMap outputs;
 
-        std::unordered_map<std::string, std::shared_ptr<Input>> _ins;
-        std::unordered_map<std::string, std::shared_ptr<Output>> _outs;
+        void reject_duplicates(const std::vector<std::string> &names,
+                               const std::string &source) const;
 
-        explicit Step(std::string name);
+        std::vector<std::string> get_duplicates(const std::vector<std::string> &names) const;
 
     };
 }

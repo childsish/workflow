@@ -1,16 +1,16 @@
-/**
- * @author: Liam Childs (liam.h.childs@gmail.com)
- * @brief:
- */
-
+#include <stdexcept>
 #include "workflow/Vertex.h"
 
 
-unsigned int workflow::Vertex::IDENTIFIER = 0;
+unsigned int IDENTIFIER = 0;
 
 workflow::Vertex::Vertex(std::string name_) :
     identifier(IDENTIFIER),
     name(std::move(name_))
 {
     IDENTIFIER += 1;
+}
+
+bool workflow::Vertex::operator==(const workflow::Vertex &that) const {
+    return this->identifier == that.identifier;
 }
