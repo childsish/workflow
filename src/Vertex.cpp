@@ -14,11 +14,3 @@ workflow::Vertex::Vertex(std::string name_) :
 bool workflow::Vertex::operator==(const workflow::Vertex &that) const {
     return this->identifier == that.identifier;
 }
-
-unsigned int workflow::Vertex::get_identifier() const {
-    return this->identifier;
-}
-
-const std::string workflow::Vertex::get_name() const {
-    return this->name;
-}

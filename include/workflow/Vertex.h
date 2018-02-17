@@ -6,26 +6,18 @@
 
 namespace workflow {
 
+    /** @brief A unique vertex in a workflow. */
     class Vertex {
     public:
 
-        virtual ~Vertex() = default;
-
-        bool operator==(const Vertex &that) const;
-
-        unsigned int get_identifier() const;
-
-        const std::string get_name() const;
-
-    protected:
+        const unsigned int identifier;
+        const std::string name;
 
         explicit Vertex(std::string name);
+        virtual ~Vertex() = default;
 
-    private:
-
-        unsigned int identifier;
-
-        std::string name;
+        /** @brief Compare two vertices. Equivalence is determined by the unique identifier. */
+        bool operator==(const Vertex &that) const;
 
     };
 }
