@@ -1,4 +1,4 @@
 #include "Input.h"
 
-workflow::Input::Input(std::string name) :
-        workflow::Vertex(name) {}
+workflow::Input::Input(const std::string &name) :
+    workflow::Connection(name) {}

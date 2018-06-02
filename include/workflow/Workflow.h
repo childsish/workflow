@@ -4,13 +4,12 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "Input.h"
+#include "Output.h"
+#include "Step.h"
 #include "WorkflowGraph.h"
 
 namespace workflow {
-
-    class Input;
-    class Output;
-    class Step;
 
     /** @brief A workflow designed to allow modelling of multiple input and multiple output steps.
      *
@@ -39,25 +38,33 @@ namespace workflow {
         /** @brief Get the steps from the workflow. */
         const WorkflowGraph::FirstPartition<0> &get_steps() const;
 
+        /** @brief Get the parent steps of the specified step. */
+        const std::unordered_set<std::shared_ptr<Step>>
+        get_parents(const Step &step) const;
+
+        /** @brief Get the child steps of the specified step. */
+        std::unordered_set<std::shared_ptr<Step>>
+        get_children(const Step &step) const;
+
         /** @brief Get the inputs to a specific step. */
         const std::unordered_set<std::shared_ptr<Input>>
-        get_connected_inputs(const std::shared_ptr<Step> &step) const;
+        get_connected_inputs(const Step &step) const;
 
         /** @brief Get the outputs from a specific step. */
         const std::unordered_set<std::shared_ptr<Output>>
-        get_connected_outputs(const std::shared_ptr<Step> &step) const;
+        get_connected_outputs(const Step &step) const;
 
         /** @brief Get the outputs connected to an input. */
         const std::unordered_set<std::shared_ptr<Output>>
-        get_connected_outputs(const std::shared_ptr<Input> &input) const;
+        get_connected_outputs(const Input &input) const;
 
         /** @brief Get the step for an input . */
-        const std::shared_ptr<Step>
-        get_connected_step(const std::shared_ptr<Input> &input) const;
+        const std::shared_ptr<Step> &
+        get_connected_step(const Input &input) const;
 
         /** @brief Get the step for an output. */
-        const std::shared_ptr<Step>
-        get_connected_step(const std::shared_ptr<Output> &output) const;
+        const std::shared_ptr<Step> &
+        get_connected_step(const Output &output) const;
 
         /** @brief Get the inputs connected to an output. */
         const std::unordered_set<std::shared_ptr<Input>>

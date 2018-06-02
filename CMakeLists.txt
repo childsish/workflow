@@ -18,10 +18,11 @@ add_subdirectory(lib/graph)
 
 add_library(workflow
         include/workflow/WorkflowGraph.h
-        src/Vertex.cpp include/workflow/Vertex.h
+        src/Connection.cpp include/workflow/Connection.h
         src/Input.cpp include/workflow/Input.h
         src/Output.cpp include/workflow/Output.h
         src/Step.cpp include/workflow/Step.h
+        src/Vertex.cpp include/workflow/Vertex.h
         src/Workflow.cpp include/workflow/Workflow.h)
 target_include_directories(workflow PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

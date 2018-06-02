@@ -11,11 +11,11 @@ namespace workflow {
 
     class Input;
     class Output;
-    typedef std::unordered_map<std::string, std::shared_ptr<Input>> InputMap;
-    typedef std::unordered_map<std::string, std::shared_ptr<Output>> OutputMap;
+    using InputMap = std::unordered_map<std::string, std::shared_ptr<Input>>;
+    using OutputMap = std::unordered_map<std::string, std::shared_ptr<Output>>;
 
-    /** @brief A step in a workflow.
-     *
+    /**
+     * @brief A step in a workflow.
      * A single step in a workflow containing inputs and outputs. `Steps` can be piped directly to
      * each other if they have only one output and/or input.
      */
@@ -24,9 +24,9 @@ namespace workflow {
 
         Step(
             const std::string &name,
-            const std::vector<std::string> &input_names,
-            const std::vector<std::string> &output_names,
-            std::shared_ptr<WorkflowGraph> graph
+            const std::vector<std::string> &input_names = std::vector<std::string>(),
+            const std::vector<std::string> &output_names = std::vector<std::string>(),
+            std::shared_ptr<WorkflowGraph> graph = std::make_shared<WorkflowGraph>()
         );
 
         /** @brief Connect this step's output to another step's input.
@@ -36,22 +36,34 @@ namespace workflow {
          */
         void pipe(const std::shared_ptr<Step> &target);
 
+        /** @name Step priority getters and setters. */
+        /**@{*/
+        unsigned int get_priority() const;
+        void set_priority(unsigned int priority);
+        /**@}*/
+
+        /** @name Synchronisers to mark named inputs and outputs as synchronised. */
+        /**@{*/
+        void synchronise_inputs(const std::vector<std::string> &input_names);
+        void synchronise_outputs(const std::vector<std::string> &output_names);
+        bool is_synchronous() const;
+        /**@}*/
+
         /** @name Getters for named inputs and outputs */
         /**@{*/
         /** @brief Get all inputs. */
-        const InputMap &get_inputs() const;
+        std::shared_ptr<InputMap> get_inputs() const;
         /** @brief Get all outputs. */
-        const OutputMap &get_outputs() const;
-        /** @brief Get named input. */
-        const std::shared_ptr<Input> get_input(const std::string &name) const;
-        /** @brief Get named output. */
-        const std::shared_ptr<Output> get_output(const std::string &name) const;
+        std::shared_ptr<OutputMap> get_outputs() const;
         /**@}*/
 
     private:
 
-        InputMap inputs;
-        OutputMap outputs;
+        unsigned int priority;
+        unsigned int sync_group;
+
+        std::shared_ptr<InputMap> inputs;
+        std::shared_ptr<OutputMap> outputs;
 
         void reject_duplicates(const std::vector<std::string> &names,
                                const std::string &source) const;
@@ -77,6 +89,13 @@ namespace std {
     struct hash<workflow::Step> {
         size_t operator()(const workflow::Step &step) const {
             return hash<unsigned int>()(step.identifier);
+        }
+    };
+
+    template <>
+    struct hash<std::shared_ptr<workflow::Step>> {
+        size_t operator()(const std::shared_ptr<workflow::Step> &step) const {
+            return hash<unsigned int>()(step->identifier);
         }
     };
 }

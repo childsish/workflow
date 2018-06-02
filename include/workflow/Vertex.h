@@ -19,7 +19,7 @@ namespace workflow {
         /** @brief The name of the vertex. */
         const std::string name;
 
-        explicit Vertex(std::string name);
+        explicit Vertex(const std::string &name);
         Vertex(const Vertex &) = delete;
         Vertex &operator=(const Vertex &) = delete;
         virtual ~Vertex() = default;

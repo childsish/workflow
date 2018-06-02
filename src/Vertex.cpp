@@ -4,9 +4,9 @@
 
 unsigned int IDENTIFIER = 0;
 
-workflow::Vertex::Vertex(std::string name_) :
+workflow::Vertex::Vertex(const std::string &name) :
     identifier(IDENTIFIER),
-    name(std::move(name_))
+    name(name)
 {
     IDENTIFIER += 1;
 }
