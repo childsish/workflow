@@ -68,7 +68,7 @@ namespace workflow {
 
         /** @brief Get the inputs connected to an output. */
         const std::unordered_set<std::shared_ptr<Input>>
-        get_connected_inputs(const std::shared_ptr<Output> &output) const;
+        get_connected_inputs(const Output &output) const;
 
     private:
 

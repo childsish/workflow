@@ -13,7 +13,9 @@ workflow::Step::Step(
 ) :
     workflow::Vertex(name),
     priority(0),
-    sync_group(0)
+    sync_group(0),
+    inputs(std::make_shared<ConnectionMap>()),
+    outputs(std::make_shared<ConnectionMap>())
 {
     this->reject_duplicates(input_names, "input");
     this->reject_duplicates(output_names, "output");
@@ -29,7 +31,9 @@ workflow::Step::Step(
 
 void workflow::Step::pipe(const std::shared_ptr<workflow::Step> &target) {
     if (this->outputs->size() == 1 && target->inputs->size() == 1) {
-        this->outputs->begin()->second->pipe(*target->inputs->begin()->second);
+        auto output = std::static_pointer_cast<Output>(this->outputs->begin()->second);
+        auto input = std::static_pointer_cast<Input>(target->inputs->begin()->second);
+        output->pipe(*input);
     }
     else if (this->outputs->empty()) {
         throw std::runtime_error("Nothing to pipe from in step " + this->name);
@@ -72,11 +76,11 @@ bool workflow::Step::is_synchronous() const {
     return this->sync_group > 0;
 }
 
-std::shared_ptr<workflow::InputMap> workflow::Step::get_inputs() const {
+std::shared_ptr<workflow::ConnectionMap> workflow::Step::get_inputs() const {
     return this->inputs;
 }
 
-std::shared_ptr<workflow::OutputMap> workflow::Step::get_outputs() const {
+std::shared_ptr<workflow::ConnectionMap> workflow::Step::get_outputs() const {
     return this->outputs;
 }
 

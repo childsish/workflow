@@ -23,12 +23,14 @@ std::shared_ptr<workflow::Step> workflow::Workflow::add_step(
     );
     this->graph->add_vertex<step_partition>(step->identifier, step);
     for (const auto &item : *step->get_inputs()) {
-        this->graph->add_vertex<input_partition>(item.second->identifier, item.second);
-        this->graph->add_edge(item.second->identifier, step->identifier);
+        const auto &input = std::static_pointer_cast<Input>(item.second);
+        this->graph->add_vertex<input_partition>(input->identifier, input);
+        this->graph->add_edge(input->identifier, step->identifier);
     }
     for (const auto &item : *step->get_outputs()) {
-        this->graph->add_vertex<output_partition>(item.second->identifier, item.second);
-        this->graph->add_edge(step->identifier, item.second->identifier);
+        const auto &output = std::static_pointer_cast<Output>(item.second);
+        this->graph->add_vertex<output_partition>(output->identifier, output);
+        this->graph->add_edge(step->identifier, output->identifier);
     }
 
     return step;
@@ -106,9 +108,9 @@ workflow::Workflow::get_connected_step(const Output &output) const {
 }
 
 const std::unordered_set<std::shared_ptr<workflow::Input>>
-workflow::Workflow::get_connected_inputs(const std::shared_ptr<workflow::Output> &output) const {
+workflow::Workflow::get_connected_inputs(const workflow::Output &output) const {
     std::unordered_set<std::shared_ptr<workflow::Input>> inputs;
-    for (const auto &input : this->graph->get_children(output->identifier)) {
+    for (const auto &input : this->graph->get_children(output.identifier)) {
         inputs.insert(this->graph->get_vertex<input_partition>(input));
     }
     return inputs;
