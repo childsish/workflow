@@ -9,8 +9,8 @@
 
 namespace workflow {
 
-    class Connection;
-    using ConnectionMap = std::unordered_map<std::string, std::shared_ptr<Connection>>;
+    using InputMap = std::unordered_map<std::string, std::shared_ptr<Input>>;
+    using OutputMap = std::unordered_map<std::string, std::shared_ptr<Output>>;
 
     /**
      * @brief A step in a workflow.
@@ -32,7 +32,7 @@ namespace workflow {
          * Pipe the single output of this step to the single input of another. If there are multiple
          * outputs or inputs, then an exception will be thrown.
          */
-        void pipe(const std::shared_ptr<Step> &target);
+        void pipe(const Step &target);
 
         /** @name Step priority getters and setters. */
         /**@{*/
@@ -49,10 +49,10 @@ namespace workflow {
 
         /** @name Getters for named inputs and outputs */
         /**@{*/
-        /** @brief Get all inputs. */
-        std::shared_ptr<ConnectionMap> get_inputs() const;
-        /** @brief Get all outputs. */
-        std::shared_ptr<ConnectionMap> get_outputs() const;
+        std::shared_ptr<Input> get_input(const std::string &name) const;
+        std::shared_ptr<InputMap> get_inputs() const;
+        std::shared_ptr<Output> get_output(const std::string &name) const;
+        std::shared_ptr<OutputMap> get_outputs() const;
         /**@}*/
 
     private:
@@ -60,8 +60,8 @@ namespace workflow {
         unsigned int priority;
         unsigned int sync_group;
 
-        std::shared_ptr<ConnectionMap> inputs;
-        std::shared_ptr<ConnectionMap> outputs;
+        std::shared_ptr<InputMap> inputs;
+        std::shared_ptr<OutputMap> outputs;
 
         void reject_duplicates(const std::vector<std::string> &names,
                                const std::string &source) const;

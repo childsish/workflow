@@ -16,3 +16,16 @@ void workflow::Output::pipe(const Input &input) {
     }
     this->graph->add_edge(this->identifier, input.identifier);
 }
+
+void workflow::Output::pipe(const Step &step) {
+    auto inputs = step.get_inputs();
+    if (inputs->size() == 1) {
+        this->pipe(*inputs->begin()->second);
+    }
+    else if (inputs->empty()) {
+        throw std::runtime_error("Nothing to pipe to in step " + step.name);
+    }
+    else if (inputs->size() > 1) {
+        throw std::runtime_error("Too many inputs to pipe to in step " + step.name);
+    }
+}

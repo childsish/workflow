@@ -1,7 +1,6 @@
 #ifndef WORKFLOW_INPUT_H
 #define WORKFLOW_INPUT_H
 
-#include <string>
 #include "Connection.h"
 
 

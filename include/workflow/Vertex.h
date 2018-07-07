@@ -20,8 +20,6 @@ namespace workflow {
         const std::string name;
 
         explicit Vertex(const std::string &name);
-        Vertex(const Vertex &) = delete;
-        Vertex &operator=(const Vertex &) = delete;
         virtual ~Vertex() = default;
 
         /** @brief Compare two vertices. Equivalence is determined by the unique identifier. */

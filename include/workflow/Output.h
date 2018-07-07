@@ -21,6 +21,7 @@ namespace workflow {
 
         /** @brief Connect the output of a step to the input of another. */
         void pipe(const Input &input);
+        void pipe(const Step &step);
 
     private:
 
