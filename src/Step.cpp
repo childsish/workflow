@@ -49,6 +49,19 @@ void workflow::Step::pipe(const Step &target) {
     }
 }
 
+void workflow::Step::pipe(const workflow::Input &input) {
+    if (this->outputs->size() == 1) {
+        auto output = this->outputs->begin()->second;
+        output->pipe(input);
+    }
+    else if (this->outputs->empty()) {
+        throw std::runtime_error("Nothing to pipe from in step " + this->name);
+    }
+    else if (this->outputs->size() > 1) {
+        throw std::runtime_error("Too many outputs to pipe from in step " + this->name);
+    }
+}
+
 unsigned int workflow::Step::get_priority() const {
     return this->priority;
 }
