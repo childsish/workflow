@@ -33,6 +33,7 @@ namespace workflow {
          * outputs or inputs, then an exception will be thrown.
          */
         void pipe(const Step &target);
+        void pipe(const Input &input);
 
         /** @name Step priority getters and setters. */
         /**@{*/
