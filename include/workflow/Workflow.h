@@ -15,7 +15,7 @@ namespace workflow {
      *
      * A workflow is a collection of steps with interconnected inputs and outputs. This class
      * facilitates the construction of the topology of a workflow by allowing the user to create
-     * steps and directly connecting theoutputs to inputs.
+     * steps and directly connecting the outputs to inputs.
      */
     class Workflow {
     public:
@@ -39,7 +39,7 @@ namespace workflow {
         const WorkflowGraph::FirstPartition<0> &get_steps() const;
 
         /** @brief Get the parent steps of the specified step. */
-        const std::unordered_set<std::shared_ptr<Step>>
+        std::unordered_set<std::shared_ptr<Step>>
         get_parents(const Step &step) const;
 
         /** @brief Get the child steps of the specified step. */
@@ -47,15 +47,15 @@ namespace workflow {
         get_children(const Step &step) const;
 
         /** @brief Get the inputs to a specific step. */
-        const std::unordered_set<std::shared_ptr<Input>>
+        std::unordered_set<std::shared_ptr<Input>>
         get_connected_inputs(const Step &step) const;
 
         /** @brief Get the outputs from a specific step. */
-        const std::unordered_set<std::shared_ptr<Output>>
+        std::unordered_set<std::shared_ptr<Output>>
         get_connected_outputs(const Step &step) const;
 
         /** @brief Get the outputs connected to an input. */
-        const std::unordered_set<std::shared_ptr<Output>>
+        std::unordered_set<std::shared_ptr<Output>>
         get_connected_outputs(const Input &input) const;
 
         /** @brief Get the step for an input . */

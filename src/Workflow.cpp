@@ -40,7 +40,7 @@ const workflow::WorkflowGraph::FirstPartition<0> &workflow::Workflow::get_steps(
     return this->graph->get_partition<0>();
 }
 
-const std::unordered_set<std::shared_ptr<workflow::Step>>
+std::unordered_set<std::shared_ptr<workflow::Step>>
 workflow::Workflow::get_parents(const Step &step) const {
     std::unordered_set<std::shared_ptr<workflow::Step>> parents;
     for (const auto &input : this->graph->get_parents(step.identifier)) {
@@ -62,7 +62,7 @@ workflow::Workflow::get_children(const Step &step) const {
     return children;
 }
 
-const std::unordered_set<std::shared_ptr<workflow::Input>>
+std::unordered_set<std::shared_ptr<workflow::Input>>
 workflow::Workflow::get_connected_inputs(const Step &step) const {
     std::unordered_set<std::shared_ptr<workflow::Input>> inputs;
     for (const auto &input : this->graph->get_parents(step.identifier)) {
@@ -71,7 +71,7 @@ workflow::Workflow::get_connected_inputs(const Step &step) const {
     return inputs;
 }
 
-const std::unordered_set<std::shared_ptr<workflow::Output>>
+std::unordered_set<std::shared_ptr<workflow::Output>>
 workflow::Workflow::get_connected_outputs(const Step &step) const {
     std::unordered_set<std::shared_ptr<workflow::Output>> outputs;
     for (const auto &output : this->graph->get_children(step.identifier)) {
@@ -80,7 +80,7 @@ workflow::Workflow::get_connected_outputs(const Step &step) const {
     return outputs;
 }
 
-const std::unordered_set<std::shared_ptr<workflow::Output>>
+std::unordered_set<std::shared_ptr<workflow::Output>>
 workflow::Workflow::get_connected_outputs(const Input &input) const {
     std::unordered_set<std::shared_ptr<workflow::Output>> outputs;
     for (const auto &output : this->graph->get_parents(input.identifier)) {
