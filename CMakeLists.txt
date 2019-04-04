@@ -5,12 +5,11 @@ set(CMAKE_CXX_STANDARD 11)
 
 # Options
 
-option(WORKFLOW_BUILD_TESTS "Enable/Disable unit tests for workflow library." on)
+option(WORKFLOW_BUILD_TESTS "Enable/Disable unit tests for workflow library." off)
 
 
 # Add graph library
 
-set(GRAPH_BUILD_TESTS off CACHE BOOL "Disable graph library unit tests.")
 add_subdirectory(lib/graph)
 
 
